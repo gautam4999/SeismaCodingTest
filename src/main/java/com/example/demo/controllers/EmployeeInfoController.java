@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.dto.EmployeeInfo;
+import com.example.demo.entities.Employee;
 import com.example.demo.services.EmployeeService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,8 @@ public class EmployeeInfoController {
 
     @PostMapping
     @ResponseBody
-    public List<EmployeeInfo> processInfo(@RequestBody @Validated List<EmployeeInfo> infoRequest){
-        List<EmployeeInfo>response = employeeService.generatePayslipInfo(infoRequest);
+    public List<Employee> processInfo(@RequestBody @Validated List<Employee> infoRequest){
+        List<Employee>response = employeeService.getPayInfo(infoRequest);
 
         return response;
     }

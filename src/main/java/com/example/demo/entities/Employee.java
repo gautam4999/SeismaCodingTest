@@ -1,6 +1,6 @@
-package com.example.demo.dto;
+package com.example.demo.entities;
 
-public class EmployeeInfo {
+public class Employee {
 
     private String firstName;
     private String lastName;
@@ -8,7 +8,8 @@ public class EmployeeInfo {
     private int paymentMonth;
     private float superRate;
 
-    public EmployeeInfo(String firstName, String lastName, int annualSalary, int paymentMonth, float superRate) {
+
+    public Employee(String firstName, String lastName, int annualSalary, int paymentMonth, float superRate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.annualSalary = annualSalary;

@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+
 public class Employee {
 
     private String firstName;
@@ -8,7 +9,7 @@ public class Employee {
     private int paymentMonth;
     private float superRate;
 
-
+    public Employee() {}
     public Employee(String firstName, String lastName, int annualSalary, int paymentMonth, float superRate) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -17,16 +18,6 @@ public class Employee {
         this.superRate = superRate;
     }
 
-    @Override
-    public String toString() {
-        return "Info{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", annualSalary=" + annualSalary +
-                ", paymentMonth=" + paymentMonth +
-                ", superRate=" + superRate +
-                '}';
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -51,4 +42,17 @@ public class Employee {
     public float getSuperRate() {
         return superRate;
     }
+
+    @Override
+    public String toString() {
+        return "Info{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", annualSalary=" + annualSalary +
+                ", paymentMonth=" + paymentMonth +
+                ", superRate=" + superRate +
+                '}';
+    }
+
 }
+

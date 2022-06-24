@@ -1,9 +1,26 @@
 package com.example.demo.entities;
 
 public class PaymentInfo {
+    private Employee employee;
     private String fromDate;
     private String toDate;
     private int grossIncome;
+    private int incomeTax;
+    private int superannuation;
+    private int netIncome;
+
+
+    public PaymentInfo(){}
+    public PaymentInfo(String fromDate, String toDate, int grossIncome, int incomeTax, int superannuation, int netIncome) {
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.grossIncome = grossIncome;
+        this.incomeTax = incomeTax;
+        this.superannuation = superannuation;
+        this.netIncome = netIncome;
+    }
+
+
 
     public int getIncomeTax() {
         return incomeTax;
@@ -13,9 +30,6 @@ public class PaymentInfo {
         this.incomeTax = incomeTax;
     }
 
-    private int incomeTax;
-    private int superannuation;
-    private int netIncome;
 
     public String getFromDate() {
         return fromDate;
@@ -57,15 +71,13 @@ public class PaymentInfo {
         this.netIncome = netIncome;
     }
 
-    public PaymentInfo(String fromDate, String toDate, int grossIncome, int incomeTax, int superannuation, int netIncome) {
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-        this.grossIncome = grossIncome;
-        this.incomeTax = incomeTax;
-        this.superannuation = superannuation;
-        this.netIncome = netIncome;
+    public Employee getEmployee() {
+        return employee;
     }
-    public PaymentInfo(){}
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     @Override
     public String toString() {

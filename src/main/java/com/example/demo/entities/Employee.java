@@ -7,10 +7,10 @@ public class Employee {
     private String lastName;
     private int annualSalary;
     private int paymentMonth;
-    private float superRate;
+    private double superRate;
 
     public Employee() {}
-    public Employee(String firstName, String lastName, int annualSalary, int paymentMonth, float superRate) {
+    public Employee(String firstName, String lastName, int annualSalary, int paymentMonth, double superRate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.annualSalary = annualSalary;
@@ -39,7 +39,7 @@ public class Employee {
         return paymentMonth;
     }
 
-    public float getSuperRate() {
+    public double getSuperRate() {
         return superRate;
     }
 

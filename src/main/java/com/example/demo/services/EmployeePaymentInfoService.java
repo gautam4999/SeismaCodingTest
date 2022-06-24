@@ -87,7 +87,7 @@ public class EmployeePaymentInfoService {
 
     public void calculateSuperannuation(PaymentInfo paymentInfo) {
         Employee employee = paymentInfo.getEmployee();
-        int superannuation = Math.round(paymentInfo.getGrossIncome() * employee.getSuperRate());
+        int superannuation = (int) Math.round(paymentInfo.getGrossIncome() * employee.getSuperRate());
         paymentInfo.setSuperannuation(superannuation);
 
     }

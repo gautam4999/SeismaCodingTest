@@ -2,16 +2,20 @@ package com.example.demo.services;
 
 import com.example.demo.entities.Employee;
 import com.example.demo.entities.PaymentInfo;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.springframework.http.converter.json.GsonBuilderUtils;
+import com.example.demo.entities.TaxThreshold;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
+
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +26,29 @@ import java.util.Calendar;
 public class EmployeePaymentInfoService {
     private List<Employee> employeeInfo;
     private final Calendar calendar = Calendar.getInstance();
-
-    JSONParser parser = new JSONParser();
-    FileReader reader = new FileReader(".\\src\\main\\resources\\TaxInfo.config.json");
-
-    Object obj = parser.parse(reader);
-    private final JSONObject taxInfoJSON = (JSONObject) obj;
-
+    private TaxThreshold[] thresholds;
 
     public EmployeePaymentInfoService() throws IOException, ParseException {
+//        this.taxThresholdArray =
+        getTaxThresholds();
+    }
+
+    public static String readFileAsString(String file) throws Exception {
+        return new String(Files.readAllBytes(Paths.get(file)));
+    }
+
+    private void getTaxThresholds() {
+        try {
+            String file = ".\\src\\main\\resources\\TaxInfo.config.json";
+            String json = readFileAsString(file);
+            ObjectMapper objectMapper = new ObjectMapper();
+            this.thresholds = objectMapper.readValue(json, TaxThreshold[].class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public List<PaymentInfo> getPayInfo(List<Employee> employees) {
@@ -85,14 +103,20 @@ public class EmployeePaymentInfoService {
     public void calculateIncomeTax(PaymentInfo paymentInfo) {
         Employee employee = paymentInfo.getEmployee();
         int taxableIncome = 0;
-        JSONArray taxBoundaries =  (JSONArray) this.taxInfoJSON.get("taxBoundaries");
-        JSONArray flatTaxCut =  (JSONArray) this.taxInfoJSON.get("flatTaxCut");
-        JSONArray percentageCut =  (JSONArray) this.taxInfoJSON.get("percentageCut");
-        for (int i = 0; i < taxBoundaries.size() - 1; i++) {
-            int annualSalary = employee.getAnnualSalary();
-            if (annualSalary > (Long) taxBoundaries.get(i) && annualSalary < (Long) taxBoundaries.get(i + 1)) {
-                taxableIncome += (Long)flatTaxCut.get(i);
-                taxableIncome += Math.round((annualSalary - (Long)taxBoundaries.get(i)) * (Double)percentageCut.get(i));
+        int annualSalary = employee.getAnnualSalary();
+        TaxThreshold maxThreshold = thresholds[thresholds.length - 1];
+        if (annualSalary >= maxThreshold.getLowerBound()) {
+            taxableIncome += maxThreshold.getFlatTaxCut();
+            taxableIncome += Math.round((annualSalary - maxThreshold.getLowerBound()) *
+                    maxThreshold.getPercentageCut());
+        } else {
+            for (int i = 0; i < thresholds.length - 1; i++) {
+                TaxThreshold currThreshold = thresholds[i];
+                if (annualSalary >= currThreshold.getLowerBound() && annualSalary <= currThreshold.getUpperBound()) {
+                    taxableIncome += currThreshold.getFlatTaxCut();
+                    taxableIncome += Math.round((annualSalary - currThreshold.getLowerBound()) *
+                            currThreshold.getPercentageCut());
+                }
             }
         }
         paymentInfo.setIncomeTax(Math.round((float) taxableIncome / 12));

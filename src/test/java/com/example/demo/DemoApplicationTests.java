@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -23,7 +25,12 @@ class DemoApplicationTests {
 
 	void test1() {
 		Employee testEmployee = new Employee("David", "Rudd", 60050, 1, 0.09);
-		EmployeePaymentInfoService service = new EmployeePaymentInfoService();
+
+		try {
+			EmployeePaymentInfoService service = new EmployeePaymentInfoService();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 
 		PaymentInfo testPaymentInfo = service.calculatePayInfo(testEmployee);
 
@@ -38,7 +45,11 @@ class DemoApplicationTests {
 	@Test
 	void test2() {
 		Employee testEmployee = new Employee("Ryan", "Chen", 120000, 1, 0.1);
-		EmployeePaymentInfoService service = new EmployeePaymentInfoService();
+		try {
+			EmployeePaymentInfoService service = new EmployeePaymentInfoService();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 
 		PaymentInfo testPaymentInfo = service.calculatePayInfo(testEmployee);
 
